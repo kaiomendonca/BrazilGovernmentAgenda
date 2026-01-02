@@ -14,7 +14,7 @@ def main(first_date, second_date):
             "/agenda-do-presidente-da-republica-lula/agenda-do-presidente-da-republica"
             f"/json/{date}"
         )   
-        event_list = request_data(url) #Lista de dicionários
+        event_list = request_data(url) 
         save_on_file(event_list)
 
 if __name__ == "__main__":
