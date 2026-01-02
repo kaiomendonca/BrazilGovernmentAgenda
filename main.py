@@ -1,64 +1,26 @@
 import requests
 import json
 import csv
-
-
-url = (
-    "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
-    "/agenda-do-presidente-da-republica-lula/agenda-do-presidente-da-republica"
-    "/json/2025-11-28"
-)
-
-headers = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/120.0.0.0 Safari/537.36"
-    ),
-    "Accept": (
-        "text/html,application/xhtml+xml,"
-        "application/xml;q=0.9,image/avif,"
-        "image/webp,image/apng,*/*;q=0.8"
-    ),
-    "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive",
-    "Upgrade-Insecure-Requests": "1",
-    "Referer": "https://www.google.com/",
-    "Cache-Control": "max-age=0"
-}
-
-response = requests.get(url, headers=headers)
+from functions import generate_dates, request_data, save_on_file
 
 
 
+def main(first_date, second_date):
+    date_list = generate_dates(first_date, second_date)
+    # import ipdb; ipdb.set_trace()
 
-for day in response.json():
-    if day['isSelected'] == True:
-        events = day['items']
+    for date in date_list:
+        url = (
+            "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
+            "/agenda-do-presidente-da-republica-lula/agenda-do-presidente-da-republica"
+            f"/json/{date}"
+        )   
+        event_list = request_data(url) #Lista de dicionários
+        save_on_file(event_list)
 
-
-with open("agenda.csv", "w", encoding= "utf8", newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(
-        [
-            'Dia/Hora',
-            'URL do evento',
-            'Localização',
-            'Horário de início',
-            'Título' 
-        ]
-    )
-
-    for event in events:
-        writer.writerow(
-            [   
-                event['datetime'],
-                event['href'],
-                event['location'],
-                event['start'],
-                event['title']
-            ]
-        )
+if __name__ == "__main__":
+    first_date = "06/12/2025"
+    second_date = "10/12/2025"
+    main(first_date, second_date)
 
  
