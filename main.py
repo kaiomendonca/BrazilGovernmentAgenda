@@ -7,7 +7,6 @@ from functions import generate_dates, request_data, save_on_file
 
 def main(first_date, second_date):
     date_list = generate_dates(first_date, second_date)
-    # import ipdb; ipdb.set_trace()
 
     for date in date_list:
         url = (
