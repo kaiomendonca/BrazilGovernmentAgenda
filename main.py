@@ -1,7 +1,8 @@
 import requests
 import json
-from pprint import pprint
 import csv
+
+
 url = (
     "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
     "/agenda-do-presidente-da-republica-lula/agenda-do-presidente-da-republica"
@@ -30,13 +31,15 @@ headers = {
 response = requests.get(url, headers=headers)
 
 
-for dia in response.json():
-    if dia['isSelected'] == True:
-        eventos = dia['items']
 
 
-with open("agenda.csv", "w", encoding= "utf8", newline='') as arquivo:
-    writer = csv.writer(arquivo)
+for day in response.json():
+    if day['isSelected'] == True:
+        events = day['items']
+
+
+with open("agenda.csv", "w", encoding= "utf8", newline='') as file:
+    writer = csv.writer(file)
     writer.writerow(
         [
             'Dia/Hora',
@@ -47,14 +50,14 @@ with open("agenda.csv", "w", encoding= "utf8", newline='') as arquivo:
         ]
     )
 
-    for evento in eventos:
+    for event in events:
         writer.writerow(
             [   
-                evento['datetime'],
-                evento['href'],
-                evento['location'],
-                evento['start'],
-                evento['title']
+                event['datetime'],
+                event['href'],
+                event['location'],
+                event['start'],
+                event['title']
             ]
         )
 
