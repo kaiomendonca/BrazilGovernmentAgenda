@@ -1,4 +1,5 @@
 import logging
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
@@ -71,19 +72,24 @@ def request_data(url):
 def save_on_file(events):
     logger.info("Saving on file")
     import csv
+    import os
+    
+    file_exist = os.path.exists("agenda.csv")
 
-    with open("agenda.csv", "w", encoding= "utf8", newline='') as file:
+    with open("agenda.csv", "a", encoding= "utf8", newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(
-            [
-                'Dia/Hora',
-                'URL do evento',
-                'Localização',
-                'Horário de início',
-                'Título' 
-            ]
-        )
-
+        
+        if not file_exist:
+            writer.writerow(
+                [
+                    'Dia/Hora',
+                    'URL do evento',
+                    'Localização',
+                    'Horário de início',
+                    'Título' 
+                ]
+            )
+    
         for event in events:
             writer.writerow(
                 [   

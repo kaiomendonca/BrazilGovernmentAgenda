@@ -18,8 +18,8 @@ def main(first_date, second_date):
         save_on_file(event_list)
 
 if __name__ == "__main__":
-    first_date = "06/12/2025"
-    second_date = "10/12/2025"
+    first_date = "20/08/2025"
+    second_date = "26/08/2025"
     main(first_date, second_date)
 
  
