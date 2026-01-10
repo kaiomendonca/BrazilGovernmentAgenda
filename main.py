@@ -1,10 +1,12 @@
 import requests
 import json
 import csv
+import click
 from functions import generate_dates, request_data, save_on_file
 
-
-
+@click.command()
+@click.option('--first_date', prompt='start date: ')
+@click.option('--second_date', prompt='end date: ')
 def main(first_date, second_date):
     date_list = generate_dates(first_date, second_date)
 
@@ -18,8 +20,6 @@ def main(first_date, second_date):
         save_on_file(event_list)
 
 if __name__ == "__main__":
-    first_date = "20/08/2025"
-    second_date = "26/08/2025"
-    main(first_date, second_date)
+    main()
 
  
