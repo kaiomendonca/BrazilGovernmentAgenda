@@ -5,8 +5,8 @@ import click
 from functions import generate_dates, request_data, save_on_file
 
 @click.command()
-@click.option('--first_date', prompt='start date: ')
-@click.option('--second_date', prompt='end date: ')
+@click.option('--first_date', prompt='start date')
+@click.option('--second_date', prompt='end date')
 def main(first_date, second_date):
     date_list = generate_dates(first_date, second_date)
 
