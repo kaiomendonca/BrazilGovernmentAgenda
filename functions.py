@@ -1,5 +1,4 @@
 import logging
-import click
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,11 +17,9 @@ def generate_dates(first_date:str, second_date:str):
     day_difference = second_date_parse - first_date_parse
     if day_difference.days <= 0:
         logger.error(
-        "Invalid date | start=%s end=%s",
-        second_date,
-        first_date
-    )
-        raise click.ClickException("Invalid date interval")
+        "The first date must have occurred before the second date."
+        )
+        return
     
     date_list = []
 
@@ -35,10 +32,7 @@ def generate_dates(first_date:str, second_date:str):
     logger.info(f"Generated {len(date_list)} dates")
     return date_list
 
-            
-
-
-
+        
 def request_data(url):
     logger.info(f"Requesting {url}")
     import requests
