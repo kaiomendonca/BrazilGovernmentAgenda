@@ -16,7 +16,7 @@ def generate_dates(first_date:str, second_date:str):
 
     day_difference = second_date_parse - first_date_parse
     if day_difference.days < 0:
-        print("Passe a data mais antiga, depois a data mais recente.")
+        log.error("Passe a data mais antiga, depois a data mais recente.")
         return 
     
     date_list = []
