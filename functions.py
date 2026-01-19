@@ -16,7 +16,9 @@ def generate_dates(first_date:str, second_date:str):
 
     day_difference = second_date_parse - first_date_parse
     if day_difference.days < 0:
-        print("Passe a data mais antiga, depois a data mais recente.")
+        logger.error(
+            "The first date must have occurred before the second date."
+        )
         return 
     
     date_list = []
