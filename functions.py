@@ -1,4 +1,5 @@
 import logging
+import click
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,7 +20,7 @@ def generate_dates(first_date:str, second_date:str):
         logger.error(
             "The first date must have occurred before the second date."
         )
-        return 
+        raise click.ClickException("Invalid date interval") 
     
     date_list = []
 
