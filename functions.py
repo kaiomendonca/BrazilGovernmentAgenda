@@ -12,8 +12,8 @@ def generate_dates(first_date:str, second_date:str):
     logger.info("Generating dates")
     from datetime import datetime, timedelta
 
-    first_date_parse = datetime.strptime(first_date, "%d/%m/%Y")
-    second_date_parse = datetime.strptime(second_date, "%d/%m/%Y")
+    first_date_parse = datetime.strptime(first_date, "%Y-%m-%d")
+    second_date_parse = datetime.strptime(second_date, "%Y-%m-%d")
 
     day_difference = second_date_parse - first_date_parse
     if day_difference.days < 0:
