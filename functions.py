@@ -70,36 +70,33 @@ def request_data(url):
             return events
         
 
+def get_mongo_client():
+    from pymongo import MongoClient
+    connection_string = "mongodb://localhost:27017"
+    return MongoClient(connection_string)
+
+
+
+
 
 
 def save_on_file(events):
+    from pymongo import MongoClient
     logger.info("Saving on file")
-    import csv
-    import os
-    
-    file_exist = os.path.exists("agenda.csv")
+    client = get_mongo_client()
+    database = client["GovernmentDB"]
+    collection = database["Events"]
 
-    with open("agenda.csv", "a", encoding= "utf8", newline='') as file:
-        writer = csv.writer(file)
-        
-        if not file_exist:
-            writer.writerow(
-                [
-                    'Dia/Hora',
-                    'URL do evento',
-                    'Localização',
-                    'Horário de início',
-                    'Título' 
-                ]
-            )
-    
-        for event in events:
-            writer.writerow(
-                [   
-                    event['datetime'],
-                    event['href'],
-                    event['location'],
-                    event['start'],
-                    event['title']
-                ]
-            )
+
+    for event in events:
+            collection.insert_one(
+            {
+            
+               
+                "datetime": event['datetime'],
+                "href": event['href'],
+                "location": event['location'],
+                "start": event['start'],
+                "title": event['title']
+            
+            })
