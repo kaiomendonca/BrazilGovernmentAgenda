@@ -76,10 +76,6 @@ def get_mongo_client():
     return MongoClient(connection_string)
 
 
-
-
-
-
 def save_on_file(events):
     from pymongo import MongoClient
     logger.info("Saving on file")
@@ -90,9 +86,7 @@ def save_on_file(events):
 
     for event in events:
             collection.insert_one(
-            {
-            
-               
+            { 
                 "datetime": event['datetime'],
                 "href": event['href'],
                 "location": event['location'],
