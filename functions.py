@@ -72,7 +72,9 @@ def request_data(url):
 
 def get_mongo_client():
     from pymongo import MongoClient
-    connection_string = "mongodb://localhost:27017"
+    import os
+    connection_string = os.getenv("MONGO_URL")
+    
     return MongoClient(connection_string)
 
 
