@@ -92,5 +92,4 @@ def save_on_file(events):
                 "location": event['location'],
                 "start": event['start'],
                 "title": event['title']
-            
             })
