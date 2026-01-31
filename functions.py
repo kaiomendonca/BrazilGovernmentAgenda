@@ -85,11 +85,12 @@ def save_on_file(events):
     database = client["GovernmentDB"]
     collection = database["Events"]
     for event in events:
-            collection.insert_one(
-            { 
-                "datetime": event['datetime'],
-                "href": event['href'],
-                "location": event['location'],
-                "start": event['start'],
-                "title": event['title']
-            })
+        collection.insert_one(
+            {
+                "datetime": event["datetime"],
+                "href": event["href"],
+                "location": event["location"],
+                "start": event["start"],
+                "title": event["title"],
+            }
+        )
