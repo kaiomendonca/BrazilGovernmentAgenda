@@ -84,8 +84,6 @@ def save_on_file(events):
     client = get_mongo_client()
     database = client["GovernmentDB"]
     collection = database["Events"]
-
-
     for event in events:
             collection.insert_one(
             { 
