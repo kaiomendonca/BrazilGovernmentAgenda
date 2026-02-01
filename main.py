@@ -3,7 +3,9 @@ import json
 import csv
 import click
 from functions import generate_dates, request_data, save_on_file
+from dotenv import load_dotenv 
 
+load_dotenv()
 @click.command()
 @click.option('--first_date', prompt='start date')
 @click.option('--second_date', prompt='end date')
