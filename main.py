@@ -1,6 +1,3 @@
-import requests
-import json
-import csv
 import click
 from functions import generate_dates, request_data, save_on_file
 from dotenv import load_dotenv 
