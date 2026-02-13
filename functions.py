@@ -76,7 +76,6 @@ def get_mongo_client():
 
     connection_string = os.getenv("MONGO_URL")
     try:
-
         client = MongoClient(connection_string, serverSelectionTimeoutMS=5000)
         client.server_info()
         logger.info("Successful connection to MongoDB.")
