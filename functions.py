@@ -71,26 +71,45 @@ def request_data(url):
         
 
 def get_mongo_client():
-    from pymongo import MongoClient
+    from pymongo import MongoClient, errors
     import os
+
     connection_string = os.getenv("MONGO_URL")
-    
-    return MongoClient(connection_string)
+    try:
+        client = MongoClient(connection_string, serverSelectionTimeoutMS=5000)
+        client.server_info()
+        logger.info("Successful connection to MongoDB.")
+        return client
+    except errors.ServerSelectionTimeoutError:
+        logger.error("Failed to connect to MongoDB. Please try again.")
+        return None
+        
 
 
 def save_on_file(events):
-    from pymongo import MongoClient
-    logger.info("Saving on file")
+    from pymongo import MongoClient, errors
     client = get_mongo_client()
+
+    if client is None:
+        logger.error("We were unable to connect to the database.")
+        return
+    
+    logger.info("Connecting to the database...")
     database = client["GovernmentDB"]
     collection = database["Events"]
-    for event in events:
-        collection.insert_one(
-            {
-                "datetime": event["datetime"],
-                "href": event["href"],
-                "location": event["location"],
-                "start": event["start"],
-                "title": event["title"],
-            }
-        )
+    logger.info("Persisting events in the database...")
+
+    try:    
+        for event in events:
+            collection.insert_one(
+                {
+                    "datetime": event["datetime"],
+                    "href": event["href"],
+                    "location": event["location"],
+                    "start": event["start"],
+                    "title": event["title"],
+                }
+            )
+        logger.info(f"{len(events)} events were saved")
+    except errors.PyMongoError as error:
+        logger.error(f"Failed to save event '{event['title']}': {error}")
