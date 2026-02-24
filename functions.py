@@ -97,19 +97,31 @@ def save_on_file(events):
     logger.info("Connecting to the database...")
     database = client["GovernmentDB"]
     collection = database["Events"]
+    collection.create_index([("href", 1), ("title", 1)], unique=True)
     logger.info("Persisting events in the database...")
 
     try:    
         for event in events:
-            collection.insert_one(
+            result = collection.update_one(
+                {"href": event["href"]},  
                 {
-                    "datetime": event["datetime"],
-                    "href": event["href"],
-                    "location": event["location"],
-                    "start": event["start"],
-                    "title": event["title"],
-                }
+                    "$setOnInsert": {        
+                        "datetime": event["datetime"],
+                        "href": event["href"],
+                        "location": event["location"],
+                        "start": event["start"],
+                        "title": event["title"],
+                    }
+                }, 
+                upsert=True      
             )
-        logger.info(f"{len(events)} events were saved")
+            if result.upserted_id:
+                logger.info(f"Event inserted: {event['title']}")
+            else:
+                logger.info(
+                    f"The event '{event['title']}' already exists in the database"
+                )
+                continue
+
     except errors.PyMongoError as error:
         logger.error(f"Failed to save event '{event['title']}': {error}")
