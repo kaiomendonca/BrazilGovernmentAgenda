@@ -33,10 +33,30 @@ def generate_dates(first_date:str, second_date:str):
     logger.info(f"Generated {len(date_list)} dates")
     return date_list
 
-            
 
-
-
+def build_official_url(name,date):
+    if name == "president":
+        return(
+            "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
+            "/agenda-do-presidente-da-republica-lula"
+            f"/agenda-do-presidente-da-republica/json/{date}"
+        )
+    
+    
+    elif name == "vice_president":
+        return(
+            "https://www.gov.br/planalto/pt-br/vice-presidencia"
+            "/agenda-vice-presidente-geraldo-alckmin"
+            f"/agenda-do-vice-presidente-geraldo-alckmin/json/{date}"
+        )
+        
+    elif name == "first_lady":
+        return(
+            "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
+            f"/agenda-da-primeira-dama/agenda-da-primeira-dama/json/{date}"
+        )
+    
+        
 def request_data(url):
     logger.info(f"Requesting {url}")
     import requests
@@ -84,7 +104,6 @@ def get_mongo_client():
         logger.error("Failed to connect to MongoDB. Please try again.")
         return None
         
-
 
 def save_on_file(events):
     from pymongo import MongoClient, errors
