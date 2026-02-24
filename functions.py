@@ -24,10 +24,10 @@ def generate_dates(first_date:str, second_date:str):
     
     date_list = []
 
-    for day in range(day_difference.days):
+    for day in range(day_difference.days + 1):
         
         date = (
-            (first_date_parse + timedelta(days=day+1)).strftime("%Y-%m-%d")
+            (first_date_parse + timedelta(days=day)).strftime("%Y-%m-%d")
         )
         date_list.append(date)
     logger.info(f"Generated {len(date_list)} dates")
