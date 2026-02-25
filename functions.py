@@ -34,28 +34,29 @@ def generate_dates(first_date:str, second_date:str):
     return date_list
 
 
-def build_official_url(name,date):
-    if name == "president":
-        return(
+def build_official_url(name, date):
+    base_urls = {
+        "president": (
             "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
             "/agenda-do-presidente-da-republica-lula"
-            f"/agenda-do-presidente-da-republica/json/{date}"
-        )
-    
-    
-    elif name == "vice_president":
-        return(
+            "/agenda-do-presidente-da-republica/json/"
+        ),
+        "vice_president": (
             "https://www.gov.br/planalto/pt-br/vice-presidencia"
             "/agenda-vice-presidente-geraldo-alckmin"
-            f"/agenda-do-vice-presidente-geraldo-alckmin/json/{date}"
-        )
-        
-    elif name == "first_lady":
-        return(
+            "/agenda-do-vice-presidente-geraldo-alckmin/json/"
+        ),
+        "first_lady": (
             "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
-            f"/agenda-da-primeira-dama/agenda-da-primeira-dama/json/{date}"
-        )
-    
+            "/agenda-da-primeira-dama/agenda-da-primeira-dama/json/"
+        ),
+    }
+
+    if name not in base_urls:
+        raise ValueError("Invalid official name")
+
+    return f"{base_urls[name]}{date}"
+ 
         
 def request_data(url):
     logger.info(f"Requesting {url}")
