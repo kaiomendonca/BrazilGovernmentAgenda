@@ -33,10 +33,31 @@ def generate_dates(first_date:str, second_date:str):
     logger.info(f"Generated {len(date_list)} dates")
     return date_list
 
-            
 
+def build_official_url(name, date):
+    base_urls = {
+        "president": (
+            "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
+            "/agenda-do-presidente-da-republica-lula"
+            "/agenda-do-presidente-da-republica/json/"
+        ),
+        "vice_president": (
+            "https://www.gov.br/planalto/pt-br/vice-presidencia"
+            "/agenda-vice-presidente-geraldo-alckmin"
+            "/agenda-do-vice-presidente-geraldo-alckmin/json/"
+        ),
+        "first_lady": (
+            "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto"
+            "/agenda-da-primeira-dama/agenda-da-primeira-dama/json/"
+        ),
+    }
 
+    if name not in base_urls:
+        raise ValueError("Invalid official name")
 
+    return f"{base_urls[name]}{date}"
+ 
+        
 def request_data(url):
     logger.info(f"Requesting {url}")
     import requests
@@ -84,7 +105,6 @@ def get_mongo_client():
         logger.error("Failed to connect to MongoDB. Please try again.")
         return None
         
-
 
 def save_on_file(events):
     from pymongo import MongoClient, errors
