@@ -8,7 +8,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def generate_dates(first_date:str, second_date:str):
+def generate_dates(first_date: str, second_date: str):
     logger.info("Generating dates")
     from datetime import datetime, timedelta
 
@@ -20,8 +20,8 @@ def generate_dates(first_date:str, second_date:str):
         logger.error(
             "The first date must have occurred before the second date."
         )
-        raise click.ClickException("Invalid date interval") 
-    
+        raise click.ClickException("Invalid date interval")
+
     date_list = []
 
     for day in range(day_difference.days + 1):
@@ -33,15 +33,38 @@ def generate_dates(first_date:str, second_date:str):
     logger.info(f"Generated {len(date_list)} dates")
     return date_list
 
-            
 
+def build_official_url(name, date):
+    GOV_AGENDA_BASE_URL = "https://www.gov.br/planalto/pt-br"
+
+    base_urls = {
+        "president": (
+            GOV_AGENDA_BASE_URL + "/acompanhe-o-planalto"
+            "/agenda-do-presidente-da-republica-lula"
+            "/agenda-do-presidente-da-republica/json/"
+        ),
+        "vice_president": (
+            GOV_AGENDA_BASE_URL + "/vice-presidencia"
+            "/agenda-vice-presidente-geraldo-alckmin"
+            "/agenda-do-vice-presidente-geraldo-alckmin/json/"
+        ),
+        "first_lady": (
+            GOV_AGENDA_BASE_URL + "/acompanhe-o-planalto"
+            "/agenda-da-primeira-dama/agenda-da-primeira-dama/json/"
+        ),
+    }
+
+    if name not in base_urls:
+        raise ValueError("Invalid official name")
+
+    return f"{base_urls[name]}{date}"
 
 
 def request_data(url):
     logger.info(f"Requesting {url}")
     import requests
     import json
-    
+
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -58,17 +81,17 @@ def request_data(url):
         "Connection": "keep-alive",
         "Upgrade-Insecure-Requests": "1",
         "Referer": "https://www.google.com/",
-        "Cache-Control": "max-age=0"
+        "Cache-Control": "max-age=0",
     }
 
-    response = requests.get(url, headers= headers)
+    response = requests.get(url, headers=headers)
 
     for day in response.json():
-        if day['isSelected'] == True:
-            events = day['items']
+        if day["isSelected"] == True:
+            events = day["items"]
             logger.info(f"Found {len(events)} events")
             return events
-        
+
 
 def get_mongo_client():
     from pymongo import MongoClient, errors
@@ -83,24 +106,24 @@ def get_mongo_client():
     except errors.ServerSelectionTimeoutError:
         logger.error("Failed to connect to MongoDB. Please try again.")
         return None
-        
 
 
 def save_on_file(events):
     from pymongo import MongoClient, errors
+
     client = get_mongo_client()
 
     if client is None:
         logger.error("We were unable to connect to the database.")
         return
-    
+
     logger.info("Connecting to the database...")
     database = client["GovernmentDB"]
     collection = database["Events"]
     collection.create_index([("href", 1), ("title", 1)], unique=True)
     logger.info("Persisting events in the database...")
 
-    try:    
+    try:
         for event in events:
             result = collection.update_one(
                 {"href": event["href"]},  
