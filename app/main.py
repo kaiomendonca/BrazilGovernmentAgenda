@@ -1,5 +1,5 @@
 import click
-from functions import (
+from app.functions import (
     generate_dates,
     request_data,
     save_on_file,
