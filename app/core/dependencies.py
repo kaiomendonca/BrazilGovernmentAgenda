@@ -1,11 +1,17 @@
 from app.database.connection import SessionLocal
+from contextlib import contextmanager
 
+@contextmanager
 def get_db():
-    db = SessionLocal()
+    session = SessionLocal()
     try:
-        yield db
+        yield session
+        session.commit()
+    except:
+        session.rollback()
+        raise
     finally:
-        db.close()
+        session.close()
 
 
 from sqlalchemy.orm import declarative_base
