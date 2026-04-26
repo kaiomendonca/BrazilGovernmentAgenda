@@ -1,4 +1,4 @@
-from core.logger import logger
+from app.core.logger import logger
 import click
 
 def generate_dates(first_date: str, second_date: str):
