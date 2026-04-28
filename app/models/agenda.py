@@ -1,5 +1,13 @@
-from core.dependencies import Base
-from sqlalchemy import Column, Integer, String, Date
+from app.database.connection import Base
+from sqlalchemy import Column, Integer, String, Enum
+import enum
+
+
+class PubliclyExposedPersons(str, enum.Enum):
+    PRESIDENT = "presidente-da-republica"
+    VICE_PRESIDENT = "vice-presidente"
+    FIRST_LADY = "primeira-dama"
+    
 
 
 class Event(Base):
@@ -13,4 +21,6 @@ class Event(Base):
     title = Column(String, index=True)
     
     
-
+# Preciso criar uma tabela para os Parlamentares separado dos eventos, assim
+# Eu consigo ter controle de qual evento pertence a qual parlamentar,
+# e consigo fazer consultas mais eficientes ADICIONANDO O ENUM LÁ EM CIMA
