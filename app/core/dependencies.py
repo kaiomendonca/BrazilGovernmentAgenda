@@ -12,8 +12,3 @@ def get_db():
         raise
     finally:
         session.close()
-
-
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
