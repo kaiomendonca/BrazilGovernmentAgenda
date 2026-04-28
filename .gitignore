@@ -213,3 +213,7 @@ agenda.csv
 #Note
 
 Note/
+
+##sqlite
+*.db
+*.sqlite3
