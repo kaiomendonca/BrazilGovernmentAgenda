@@ -1,7 +1,7 @@
 from app.core.logger import logger
 import click
 
-def generate_dates(first_date: str, second_date: str):
+def generate_dates(first_date: str, second_date: str) -> list:
     logger.info("Generating dates")
     from datetime import datetime, timedelta
 
