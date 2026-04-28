@@ -1,4 +1,4 @@
-from app.core import logger
+from app.core.logger import logger
 
 def request_data(url):
     logger.info(f"Requesting {url}")
