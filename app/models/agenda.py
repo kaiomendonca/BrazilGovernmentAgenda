@@ -9,7 +9,6 @@ class PubliclyExposedPersons(str, enum.Enum):
     FIRST_LADY = "primeira-dama"
     
 
-
 class Event(Base):
     __tablename__ = "events"
 
@@ -20,7 +19,10 @@ class Event(Base):
     start = Column(String, index=True)
     title = Column(String, index=True)
     
-    
-# Preciso criar uma tabela para os Parlamentares separado dos eventos, assim
-# Eu consigo ter controle de qual evento pertence a qual parlamentar,
-# e consigo fazer consultas mais eficientes ADICIONANDO O ENUM LÁ EM CIMA
+
+class Authorities(Base):
+    __tablename__ = "authorities"
+
+    _id = Column(Integer, primary_key=True, index=True)
+    role = Column(Enum(PubliclyExposedPersons), index=True)
+    event_id = Column(Integer, foreign_key = "events._id")
