@@ -5,10 +5,16 @@ def generate_dates(first_date: str, second_date: str) -> list:
     logger.info("Generating dates")
     from datetime import datetime, timedelta
 
-    first_date_parse = datetime.strptime(first_date, "%Y-%m-%d")
-    second_date_parse = datetime.strptime(second_date, "%Y-%m-%d")
+    try:
+        first_date_parse = datetime.strptime(first_date, "%Y-%m-%d")
+        second_date_parse = datetime.strptime(second_date, "%Y-%m-%d")
+    
+    except ValueError:
+        logger.error("Invalid date format or non-existent date")
+        raise click.ClickException("Invalid date")
 
     day_difference = second_date_parse - first_date_parse
+    
     if day_difference.days < 0:
         logger.error(
             "The first date must have occurred before the second date."
