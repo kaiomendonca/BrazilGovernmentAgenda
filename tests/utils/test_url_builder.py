@@ -1,5 +1,6 @@
 from app.utils.url_builder import build_official_url
 import pytest
+from click import ClickException
 
 class TestBuildOfficialUrl:
     
@@ -41,4 +42,6 @@ class TestBuildOfficialUrl:
         assert build_official_url(role, "2026-01-01") == expected_url + "2026-01-01"
         
         
-    
+    def test_invalid_names_for_official_build_url(self):
+        with pytest.raises(ValueError):
+            build_official_url("authority", "2026-01-01")
