@@ -1,4 +1,6 @@
 from app.utils.date_utils import generate_dates
+import pytest
+from click import ClickException
 
 
 class TestGenerateDates:
@@ -17,3 +19,12 @@ class TestGenerateDates:
             "2026-01-04"
         ]
             
+            
+    def test_generate_dates_invalid_dates(self):
+        with pytest.raises(ClickException):
+            generate_dates("2026-02-30", "2026-03-05")
+
+    def test_generate_dates_reverse_interval(self):
+        with pytest.raises(ClickException):
+            generate_dates("2026-04-03", "2026-04-01")
+        
