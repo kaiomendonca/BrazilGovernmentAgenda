@@ -1,5 +1,7 @@
-from app.core.logger import logger
+from app.core.logger import get_logger
 import click
+
+logger = get_logger(__name__)
 
 def generate_dates(first_date: str, second_date: str) -> list:
     logger.info("Generating dates")

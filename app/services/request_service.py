@@ -1,9 +1,10 @@
-from app.core.logger import logger
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 def request_data(url):
     logger.info(f"Requesting {url}")
     import requests
-    import json
 
     headers = {
         "User-Agent": (
