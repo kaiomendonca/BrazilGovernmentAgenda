@@ -1,6 +1,5 @@
 from app.utils.url_builder import build_official_url
 import pytest
-from click import ClickException
 
 class TestBuildOfficialUrl:
     
