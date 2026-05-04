@@ -6,7 +6,7 @@ from app.core.dependencies import get_db
 from app.database.connection import init_db
 
 
-def process_agenda(official_name: str, start_date: str, end_date: str):
+def process_agenda(official_name: str, start_date: str, end_date: str) -> None:
     
     init_db()
     
