@@ -1,5 +1,5 @@
 from app.database.connection import Base
-from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy import Column, Integer, String, Enum, ForeignKey
 import enum
 
 
@@ -25,4 +25,4 @@ class Authorities(Base):
 
     _id = Column(Integer, primary_key=True, index=True)
     role = Column(Enum(PubliclyExposedPersons), index=True)
-    event_id = Column(Integer, foreign_key = "events._id")
+    event_id = Column(Integer, ForeignKey("events._id"))
