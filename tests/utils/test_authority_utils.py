@@ -36,4 +36,8 @@ class TestAuthorityHref:
     def test_get_authority_from_href(self, href, expected_role):
         assert get_authority_from_href(href) == expected_role
         
+    
+    def test_should_return_none_when_slug_found(self):
+        assert get_authority_from_href("") == None
+        
         
