@@ -1,4 +1,4 @@
-def build_official_url(name, date):
+def build_official_url(name: str, date: str) -> str:
     GOV_AGENDA_BASE_URL = "https://www.gov.br/planalto/pt-br"
 
     base_urls = {
