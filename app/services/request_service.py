@@ -2,7 +2,7 @@ from app.core.logger import get_logger
 
 logger = get_logger(__name__)
 
-def request_data(url):
+def request_data(url: str) -> list:
     logger.info(f"Requesting {url}")
     import requests
 
