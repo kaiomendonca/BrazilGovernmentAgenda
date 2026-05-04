@@ -6,7 +6,7 @@ ROLE_MAPPING = {
     "primeira-dama": PubliclyExposedPersons.FIRST_LADY,
 }
 
-def get_authority_from_href(href_string: str) -> None:
+def get_authority_from_href(href_string: str) -> PubliclyExposedPersons | None:
     href_lower = href_string.lower()
     
     for slug, role_enum in ROLE_MAPPING.items():
