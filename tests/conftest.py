@@ -6,7 +6,7 @@ from app.database.connection import Base
 
 @pytest.fixture
 def db_session():
-    engine = create_engine("sqlite///:memory:")
+    engine = create_engine("sqlite:///:memory:")
     
     TestingSessionLocal = sessionmaker(bind=engine)
     
