@@ -25,7 +25,12 @@ def request_data(url: str) -> list:
         "Cache-Control": "max-age=0",
     }
 
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+    
+    except requests.exceptions.RequestException as error:
+        logger.error(f"Request failed: {error}")
+        return None
 
     for day in response.json():
         if day["isSelected"] == True:
