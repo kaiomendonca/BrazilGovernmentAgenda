@@ -1,19 +1,22 @@
 # BrazilGovernmentAgenda
 
-CLI que coleta as agendas oficiais de autoridades do Governo Federal (presidente,
-vice-presidente e primeira-dama) a partir das APIs públicas de agenda, normaliza
-os eventos e os persiste em um banco de dados SQLite via SQLAlchemy.
+API Web desenvolvida com FastAPI que coleta, normaliza e disponibiliza dados públicos das agendas oficiais de autoridades do Governo Federal, como Presidente, Vice-Presidente e Primeira-Dama, a partir das APIs públicas de agenda.
+
+Os dados são processados e persistidos em SQLite utilizando SQLAlchemy, permitindo consultas centralizadas e padronizadas por meio de endpoints REST.
+
+O projeto tem como objetivo facilitar o acesso, consulta e análise de informações públicas, oferecendo uma fonte centralizada para cidadãos acompanharem compromissos oficiais e para organizações analisarem a agenda pública das autoridades como insumo para planejamento, acompanhamento institucional e tomada de decisões.
 
 ## O que o projeto faz
 
-- Constrói, para cada dia de um intervalo de datas, a URL pública da agenda da
-  autoridade solicitada.
-- Faz a requisição HTTP (`requests`) e extrai a lista de eventos (compromissos)
-  retornada pela API.
-- Mapeia cada evento para o modelo de dados `Event`.
-- Detecta a autoridade/role a partir do `href` do evento.
-- Persiste eventos e a relação evento-autoridade no banco SQLite, evitando
-  duplicações.
+- Coleta: constrói, para cada dia de um intervalo de datas, a URL pública da
+  agenda da autoridade solicitada, faz a requisição HTTP (`requests`) e extrai
+  os eventos (compromissos) retornados pela API.
+- Normaliza: mapeia cada evento para o modelo de dados `Event` e detecta a
+  autoridade/role a partir do `href` do evento.
+- Persiste: salva eventos e a relação evento-autoridade no banco SQLite,
+  evitando duplicações.
+- Expõe: disponibiliza os dados via API REST (FastAPI) com endpoints de leitura
+  de eventos e autoridades.
 
 ## Fontes de dados
 
@@ -42,7 +45,8 @@ de organizá-los de forma mais legível e acessível a qualquer tipo de público
 ```
 BrazilGovernmentAgenda/
 ├── app/
-│   ├── main.py                         # Entrypoint CLI (Click)
+│   ├── main.py                         # Entrypoint FastAPI (create_app, /health)
+│   ├── schemas.py                      # Pydantic models (EventOut, AuthorityOut, responses)
 │   ├── core/
 │   │   ├── dependencies.py             # contextmanager get_db() (sessão/commit/rollback)
 │   │   └── logger.py                   # Logger colorido (dev) ou JSON (prod)
@@ -52,7 +56,10 @@ BrazilGovernmentAgenda/
 │   │   └── agenda.py                   # Entidades Event, Authorities e enum PubliclyExposedPersons
 │   ├── repositories/
 │   │   ├── authority_repository.py     # persiste relação autoridade x evento
-│   │   └── event_repository.py         # salva eventos com deduplicação por href
+│   │   └── event_repository.py         # salva eventos com deduplicação por href e lista
+│   ├── router/
+│   │   ├── events.py                   # GET /events e GET /events/{event_id}
+│   │   └── authorities.py              # GET /authorities
 │   ├── services/
 │   │   ├── agenda_service.py           # orquestra o fluxo Planalto
 │   │   └── request_service.py          # requisição HTTP e extração dos events
@@ -70,22 +77,22 @@ BrazilGovernmentAgenda/
 ## Fluxo de dados (Planalto)
 
 ```
-main (Click: name, first_date, second_date)
-  └─ process_agenda(official_name, start_date, end_date)
-       init_db()
-       date_list = generate_dates(start, end)          # lista de datas %
-       for date in date_list:
-           url = build_official_url(name, date)        # URL da API JSON
-           events = request_data(url)                  # chamada HTTP + extração
-           with get_db() as db:
-               EventRepository(db).save(events)        # persistência
-                   └─ AuthorityRepository.save_for_event(event, href)
+process_agenda(official_name, start_date, end_date)
+  ├─ init_db()
+  ├─ date_list = generate_dates(start, end)          # lista de datas %
+  └─ for date in date_list:
+        url = build_official_url(name, date)         # URL da API JSON
+        events = request_data(url)                   # chamada HTTP + extração
+        EventRepository(session).save(events)        # persistência
+            └─ AuthorityRepository.save_for_event(event, href)
 ```
+
+Os dados coletados são então expostos pela API REST (endpoints em `router/`).
 
 Detalhes:
 
 - `generate_dates` — valida formato `%Y-%m-%d`, rejeita datas inválidas ou
-  intervalos invertidos (`ClickException`).
+  intervalos invertidos (lança erro de validação).
 - `request_data` — envia headers de navegador, loga a requisição e retorna os
   eventos do dia com `isSelected == True`. Retorna `None` em erro de rede.
 - `EventRepository.save` — cria evento apenas se `href` ainda não existe;
@@ -122,17 +129,35 @@ Detalhes:
 # dependências
 pip install -r requirements.txt
 
-# executar a coleta (pede os parâmetros interativamente)
+# subir a API
 python -m app.main
-
-# ou passando via flags
-python -m app.main --name president --first-date 2026-01-01 --second-date 2026-01-05
+# ou
+uvicorn app.main:app --reload
 ```
 
-Argumentos do CLI:
+A API sobe em `http://localhost:8000` e a documentação interativa (Swagger)
+fica em `http://localhost:8000/docs`.
 
-- `--name`: `president`, `vice_president` ou `first_lady`
-- `--first-date` / `--second-date`: intervalo de datas em `%Y-%m-%d`
+A coleta é executada via código, usando a função `process_agenda`:
+
+```python
+from app.services.agenda_service import process_agenda
+
+process_agenda("president", "2026-01-01", "2026-01-05")
+```
+
+## Endpoints
+
+| Método | Caminho                 | Descrição                                         |
+|--------|-------------------------|---------------------------------------------------|
+| GET    | `/health`               | Health check (`{"status": "ok"}`)                |
+| GET    | `/events`               | Lista eventos (filtros: `authority`, `date`, `location`, `search`; paginação `limit`/`offset`) |
+| GET    | `/events/{event_id}`    | Retorna um evento pelo ID                         |
+| GET    | `/authorities`          | Lista autoridades (filtros: `role`, `event_id`; paginação `limit`/`offset`) |
+
+Parâmetros de autoridade/role:
+
+- `president`, `vice_president` ou `first_lady`
 
 ## Configuração (.env)
 
@@ -156,11 +181,11 @@ Testes existentes:
 - `tests/services/test_request_service.py` — `request_data` (extração de eventos e erro de rede) usando mocks.
 - `tests/repositories/test_event_repository.py` — salvamento e não-duplicação de eventos, com fixture `db_session` (SQLite em memória).
 
-## Roadmap / notas (ver `Note/`)
+## Roadmap / notas
 
 - **e-Agendas**: consumir os dados já unificados pelo e-Agendas e organizá-los de
   forma legível e acessível ao público.
-- **Consulta**: criar funções de leitura além de `save` e regras específicas de negócio.
+- **Consulta**: expandir as funções de leitura além do atual (`list_events`, `get_by_id`, `list_authorities`) e adicionar regras específicas de negócio.
 - **Python date/time**: padronizar data e fuso horário em `datetime` (branch `chore/iso-8601-date-standard`).
 - **Redis**: cache para datas futuras (TTL) e Postgres como histórico de dados passados (ver `Note/redis.txt`).
 - **Ferramentas**: poetry, ruff, pre-commit e pipelines de CI/CD.
