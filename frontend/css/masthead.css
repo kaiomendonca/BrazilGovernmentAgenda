@@ -1,0 +1,40 @@
+/* ==========================================================================
+   MASTHEAD — cabeçalho fixo do site (marca + navegação + linha tricolor)
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 47–81).
+   ------------------------------------------------------------------------ */
+
+.masthead{padding-top:22px;}
+.masthead__row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.masthead__mark{display:flex; flex-direction:column; gap:2px;}
+.masthead__title{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:600;
+}
+.masthead__sub{
+  font-size:12.5px;
+  color:var(--ink-soft);
+  letter-spacing:.02em;
+}
+.masthead__nav{
+  display:flex;
+  gap:26px;
+  font-size:14.5px;
+  padding-bottom:4px;
+}
+.masthead__nav a{color:var(--ink); font-weight:500;}
+.masthead__nav a:hover{color:var(--blue-deep);}
+.masthead__github{color:var(--blue-deep) !important;}
+.masthead__rule{
+  height:1px;
+  background:linear-gradient(90deg, var(--blue) 0 33%, var(--yellow) 33% 66%, var(--green) 66% 100%);
+  margin-top:18px;
+  opacity:.85;
+}

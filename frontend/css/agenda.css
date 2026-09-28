@@ -1,0 +1,196 @@
+/* ==========================================================================
+   AGENDA — consulta de eventos (filtros, lista de resultados e paginação)
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 198–388).
+   ------------------------------------------------------------------------ */
+
+.agenda{padding:20px 28px 70px;}
+.agenda__head h2{
+  font-family:var(--serif);
+  font-size:28px;
+  margin:0 0 6px;
+}
+.agenda__head p{
+  color:var(--ink-soft);
+  margin:0 0 28px;
+  max-width:60ch;
+}
+
+.filters{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 20px 20px;
+  margin-bottom:28px;
+  background:var(--paper);
+}
+.filters__roles{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.role-btn{
+  border:1px solid var(--line);
+  background:var(--white);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:13.5px;
+  font-weight:500;
+  padding:8px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:border-color .15s, color .15s;
+}
+.role-btn:hover{border-color:var(--ink-soft);}
+.role-btn.is-active{
+  color:var(--white);
+  border-color:transparent;
+  background:var(--ink);
+}
+.role-btn--president.is-active{background:var(--blue);}
+.role-btn--vice.is-active{background:var(--green);}
+.role-btn--first-lady.is-active{background:var(--yellow-deep); color:var(--ink);}
+
+.filters__row{
+  display:flex;
+  gap:14px;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  font-weight:500;
+}
+.field--grow{flex:1 1 220px;}
+.field input{
+  font-family:var(--sans);
+  font-size:14px;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  color:var(--ink);
+  background:var(--white);
+  min-width:0;
+}
+.field input:focus{border-color:var(--blue);}
+
+.btn-primary{
+  background:var(--blue);
+  color:var(--white);
+  border:none;
+  font-family:var(--sans);
+  font-weight:600;
+  font-size:14px;
+  padding:10px 20px;
+  border-radius:var(--radius);
+  cursor:pointer;
+}
+.btn-primary:hover{background:var(--blue-deep);}
+.btn-ghost{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:500;
+  font-size:14px;
+  padding:10px 18px;
+  border-radius:var(--radius);
+  cursor:pointer;
+}
+.btn-ghost:hover{border-color:var(--ink-soft);}
+
+.results__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13.5px;
+  color:var(--ink-soft);
+  margin-bottom:12px;
+}
+.results__sort{display:flex; gap:8px; align-items:center;}
+.results__sort select{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:6px 8px;
+  font-family:var(--sans);
+  font-size:13px;
+}
+
+.event-list{
+  list-style:none;
+  margin:0 0 22px;
+  padding:0;
+  border-top:1px solid var(--line);
+}
+.event-item{
+  display:grid;
+  grid-template-columns:110px 90px 1fr auto;
+  gap:18px;
+  align-items:start;
+  padding:16px 4px;
+  border-bottom:1px solid var(--line);
+  border-left:3px solid transparent;
+  padding-left:14px;
+}
+.event-item--president{border-left-color:var(--blue);}
+.event-item--vice_president{border-left-color:var(--green);}
+.event-item--first_lady{border-left-color:var(--yellow-deep);}
+
+.event-item__date{
+  font-family:var(--mono);
+  font-size:12.5px;
+  color:var(--ink-soft);
+}
+.event-item__time{
+  font-family:var(--mono);
+  font-size:12.5px;
+  color:var(--ink);
+  font-weight:600;
+}
+.event-item__title{
+  font-size:15px;
+  font-weight:600;
+  margin:0 0 4px;
+}
+.event-item__loc{
+  font-size:13px;
+  color:var(--ink-soft);
+}
+.event-item__role{
+  font-size:11.5px;
+  font-weight:600;
+  padding:4px 9px;
+  border-radius:20px;
+  white-space:nowrap;
+  height:fit-content;
+}
+.event-item__role--president{background:rgba(19,81,216,.1); color:var(--blue-deep);}
+.event-item__role--vice_president{background:rgba(11,138,61,.1); color:var(--green-deep);}
+.event-item__role--first_lady{background:rgba(197,158,0,.16); color:#8a6c00;}
+
+.event-skeleton{
+  height:64px;
+  margin:8px 0;
+  border-radius:var(--radius);
+  background:linear-gradient(90deg, var(--paper) 25%, #eef0ee 37%, var(--paper) 63%);
+  background-size:400% 100%;
+  animation:shimmer 1.4s ease infinite;
+  list-style:none;
+}
+@keyframes shimmer{
+  0%{background-position:100% 50%;}
+  100%{background-position:0 50%;}
+}
+.event-list__empty, .event-list__error{
+  padding:30px 4px;
+  color:var(--ink-soft);
+  font-size:14.5px;
+}
+.event-list__error{color:#b3341c;}
+
+.results__footer{text-align:center;}
+.results__footer .btn-ghost[hidden]{display:none;}

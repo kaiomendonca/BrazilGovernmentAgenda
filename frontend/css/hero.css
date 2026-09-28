@@ -1,0 +1,119 @@
+/* ==========================================================================
+   HERO — cabeçalho da home (chamada, stats por autoridade e "Hoje na agenda")
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 83–196).
+   ------------------------------------------------------------------------ */
+
+.hero{
+  display:grid;
+  grid-template-columns:1.15fr 0.85fr;
+  gap:56px;
+  padding:56px 28px 64px;
+  align-items:start;
+}
+.hero__date{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--blue-deep);
+  margin:0 0 14px;
+}
+.hero__title{
+  font-family:var(--serif);
+  font-size:52px;
+  line-height:1.05;
+  font-weight:600;
+  margin:0 0 20px;
+  letter-spacing:-.01em;
+}
+.hero__desc{
+  max-width:46ch;
+  color:var(--ink-soft);
+  font-size:16.5px;
+  margin:0 0 34px;
+}
+.hero__stats{
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+}
+.stat{
+  border-left:3px solid var(--line);
+  padding-left:12px;
+  min-width:110px;
+}
+.stat--president{border-color:var(--blue);}
+.stat--vice{border-color:var(--green);}
+.stat--first-lady{border-color:var(--yellow-deep);}
+.stat__num{
+  display:block;
+  font-family:var(--serif);
+  font-size:30px;
+  font-weight:600;
+  line-height:1;
+}
+.stat__label{
+  display:block;
+  margin-top:4px;
+  font-size:12.5px;
+  color:var(--ink-soft);
+}
+
+.today-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.today-card__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line);
+  font-weight:600;
+  font-size:14px;
+}
+.today-card__status{
+  font-family:var(--mono);
+  font-size:11.5px;
+  font-weight:500;
+  color:var(--ink-soft);
+}
+.today-card__status.is-ok{color:var(--green-deep);}
+.today-card__status.is-error{color:#b3341c;}
+.today-card__list{
+  list-style:none;
+  margin:0;
+  padding:6px 0;
+  max-height:340px;
+  overflow-y:auto;
+}
+.today-card__empty{
+  padding:22px 18px;
+  color:var(--ink-soft);
+  font-size:14px;
+}
+.today-item{
+  display:flex;
+  gap:12px;
+  padding:12px 18px;
+  border-bottom:1px solid var(--line);
+}
+.today-item:last-child{border-bottom:none;}
+.today-item__bar{
+  width:3px;
+  border-radius:2px;
+  flex-shrink:0;
+}
+.today-item__bar--president{background:var(--blue);}
+.today-item__bar--vice{background:var(--green);}
+.today-item__bar--first_lady{background:var(--yellow-deep);}
+.today-item__time{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--ink-soft);
+  min-width:44px;
+}
+.today-item__body{font-size:13.5px;}
+.today-item__title{font-weight:500; display:block;}
+.today-item__loc{color:var(--ink-soft); font-size:12.5px;}

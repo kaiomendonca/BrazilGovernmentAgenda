@@ -1,0 +1,18 @@
+/* ==========================================================================
+   FOOTER — rodapé do site
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 477–489).
+   ------------------------------------------------------------------------ */
+
+.site-footer{
+  border-top:1px solid var(--line);
+  padding:26px 28px;
+}
+.site-footer__row{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+  font-size:13px;
+  color:var(--ink-soft);
+}

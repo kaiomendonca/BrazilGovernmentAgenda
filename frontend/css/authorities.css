@@ -1,0 +1,42 @@
+/* ==========================================================================
+   AUTHORITIES — cards de autoridades monitoradas
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 390–426).
+   ------------------------------------------------------------------------ */
+
+.authorities{padding:10px 28px 70px;}
+.authorities h2{
+  font-family:var(--serif);
+  font-size:28px;
+  margin:0 0 24px;
+}
+.authority-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.authority-card{
+  border:1px solid var(--line);
+  border-top:3px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px 20px;
+}
+.authority-card--president{border-top-color:var(--blue);}
+.authority-card--vice{border-top-color:var(--green);}
+.authority-card--first-lady{border-top-color:var(--yellow-deep);}
+.authority-card h3{
+  font-family:var(--serif);
+  font-size:19px;
+  margin:0 0 8px;
+}
+.authority-card__count{
+  font-family:var(--mono);
+  font-size:12.5px;
+  color:var(--ink-soft);
+  margin:0 0 12px;
+}
+.authority-card__desc{
+  font-size:14px;
+  color:var(--ink-soft);
+  margin:0;
+}

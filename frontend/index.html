@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Pública — Brazil Government Agenda</title>
+<meta name="description" content="Consulta centralizada das agendas oficiais do Presidente, Vice-Presidente e Primeira-Dama, a partir de dados públicos do Planalto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/masthead.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/agenda.css">
+<link rel="stylesheet" href="css/authorities.css">
+<link rel="stylesheet" href="css/about.css">
+<link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead__row">
+    <div class="masthead__mark">
+      <span class="masthead__title">Agenda Pública</span>
+      <span class="masthead__sub">Governo Federal</span>
+    </div>
+    <nav class="masthead__nav" aria-label="Navegação principal">
+      <a href="#agenda">Agenda</a>
+      <a href="#autoridades">Autoridades</a>
+      <a href="#sobre">Sobre a API</a>
+      <a class="masthead__github" href="https://github.com/" target="_blank" rel="noopener" id="github-link">GitHub ↗</a>
+    </nav>
+  </div>
+  <div class="masthead__rule"></div>
+</header>
+
+<main>
+
+  <section class="hero wrap">
+    <div class="hero__lead">
+      <p class="hero__date" id="hero-date">—</p>
+      <h1 class="hero__title">O que o Planalto<br>fez hoje.</h1>
+      <p class="hero__desc">
+        Compromissos oficiais do Presidente, Vice-Presidente e Primeira-Dama,
+        coletados diretamente das agendas públicas e organizados em um só lugar.
+      </p>
+      <div class="hero__stats" id="hero-stats">
+        <div class="stat stat--president">
+          <span class="stat__num" data-count="president">–</span>
+          <span class="stat__label">Presidente</span>
+        </div>
+        <div class="stat stat--vice">
+          <span class="stat__num" data-count="vice_president">–</span>
+          <span class="stat__label">Vice-Presidente</span>
+        </div>
+        <div class="stat stat--first-lady">
+          <span class="stat__num" data-count="first_lady">–</span>
+          <span class="stat__label">Primeira-Dama</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="today-card" aria-label="Compromissos de hoje">
+      <div class="today-card__head">
+        <span>Hoje na agenda</span>
+        <span class="today-card__status" id="api-status">conectando…</span>
+      </div>
+      <ul class="today-card__list" id="today-list">
+        <li class="today-card__empty">Carregando eventos…</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section class="agenda wrap" id="agenda">
+    <div class="agenda__head">
+      <h2>Consultar agenda</h2>
+      <p>Filtre por autoridade, data ou palavra-chave para explorar os compromissos coletados.</p>
+    </div>
+
+    <form class="filters" id="filters">
+      <div class="filters__roles" role="group" aria-label="Filtrar por autoridade">
+        <button type="button" class="role-btn is-active" data-role="">Todas</button>
+        <button type="button" class="role-btn role-btn--president" data-role="president">Presidente</button>
+        <button type="button" class="role-btn role-btn--vice" data-role="vice_president">Vice-Presidente</button>
+        <button type="button" class="role-btn role-btn--first-lady" data-role="first_lady">Primeira-Dama</button>
+      </div>
+
+      <div class="filters__row">
+        <label class="field">
+          <span>Data</span>
+          <input type="date" id="filter-date" name="date">
+        </label>
+        <label class="field field--grow">
+          <span>Buscar</span>
+          <input type="text" id="filter-search" name="search" placeholder="título, local ou compromisso">
+        </label>
+        <label class="field">
+          <span>Local</span>
+          <input type="text" id="filter-location" name="location" placeholder="ex: Brasília">
+        </label>
+        <button type="submit" class="btn-primary">Buscar</button>
+        <button type="button" class="btn-ghost" id="clear-filters">Limpar</button>
+      </div>
+    </form>
+
+    <div class="results">
+      <div class="results__head">
+        <span id="results-count">—</span>
+        <label class="results__sort">
+          Ordenar
+          <select id="sort-select">
+            <option value="desc">Mais recentes</option>
+            <option value="asc">Mais antigos</option>
+          </select>
+        </label>
+      </div>
+
+      <ul class="event-list" id="event-list">
+        <li class="event-skeleton"></li>
+        <li class="event-skeleton"></li>
+        <li class="event-skeleton"></li>
+      </ul>
+
+      <div class="results__footer">
+        <button class="btn-ghost" id="load-more">Carregar mais</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="authorities wrap" id="autoridades">
+    <h2>Autoridades monitoradas</h2>
+    <div class="authority-grid" id="authority-grid">
+      <article class="authority-card authority-card--president">
+        <h3>Presidente da República</h3>
+        <p class="authority-card__count" data-authority-count="president">– eventos registrados</p>
+        <p class="authority-card__desc">Compromissos oficiais coletados da agenda pública do Planalto.</p>
+      </article>
+      <article class="authority-card authority-card--vice">
+        <h3>Vice-Presidente</h3>
+        <p class="authority-card__count" data-authority-count="vice_president">– eventos registrados</p>
+        <p class="authority-card__desc">Agenda pública da Vice-Presidência da República.</p>
+      </article>
+      <article class="authority-card authority-card--first-lady">
+        <h3>Primeira-Dama</h3>
+        <p class="authority-card__count" data-authority-count="first_lady">– eventos registrados</p>
+        <p class="authority-card__desc">Compromissos institucionais da Primeira-Dama.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="about wrap" id="sobre">
+    <div class="about__text">
+      <h2>Sobre a API</h2>
+      <p>
+        O <strong>BrazilGovernmentAgenda</strong> é uma API pública construída com FastAPI que
+        coleta, normaliza e persiste os compromissos oficiais divulgados pelo Governo Federal,
+        disponibilizando-os por meio de endpoints REST documentados.
+      </p>
+      <p>
+        Este site consome a API diretamente pelo navegador — sem intermediários — para exibir
+        os dados em tempo real.
+      </p>
+    </div>
+    <div class="about__endpoints">
+      <p class="about__endpoints-label">Endpoints principais</p>
+      <ul class="endpoints-list">
+        <li><code>GET /events</code><span>lista de eventos com filtros e paginação</span></li>
+        <li><code>GET /events/{id}</code><span>detalhe de um evento</span></li>
+        <li><code>GET /authorities</code><span>autoridades monitoradas</span></li>
+        <li><code>GET /health</code><span>status da API</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <p>Dados públicos coletados via <a href="https://www.gov.br/planalto/pt-br" target="_blank" rel="noopener">gov.br/planalto</a>.</p>
+    <p>Projeto de portfólio — API própria em FastAPI + SQLAlchemy.</p>
+  </div>
+</footer>
+
+<!-- JS separado em módulos ES, dentro de js/. O main.js é o ponto de entrada
+     e importa os módulos restantes (config, api, format, render, ui).
+     Obs.: por usar ES Modules, a página precisa ser servida via HTTP
+     (ex.: rodando o backend FastAPI) e não aberta direto de "file://". -->
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+/* ==========================================================================
+   ABOUT — seção "Sobre a API" e lista de endpoints
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 428–475).
+   ------------------------------------------------------------------------ */
+
+.about{
+  padding:20px 28px 80px;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:56px;
+  border-top:1px solid var(--line);
+  padding-top:56px;
+}
+.about h2{
+  font-family:var(--serif);
+  font-size:26px;
+  margin:0 0 16px;
+}
+.about p{color:var(--ink-soft); font-size:15px; max-width:52ch;}
+.about__endpoints-label{
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink-soft);
+  margin:0 0 12px;
+}
+.endpoints-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.endpoints-list li{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:center;
+  padding:12px 16px;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+.endpoints-list li:last-child{border-bottom:none;}
+.endpoints-list code{
+  font-family:var(--mono);
+  font-size:12.5px;
+  color:var(--blue-deep);
+  background:var(--paper);
+  padding:3px 7px;
+  border-radius:3px;
+}
+.endpoints-list span{color:var(--ink-soft);}

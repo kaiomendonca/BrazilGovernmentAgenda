@@ -1,0 +1,53 @@
+/* ==========================================================================
+   BASE — reset, variáveis, tipografia e utilitários globais
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 1–45).
+   Dependências: as demais folhas (masthead, hero, agenda, etc.) dependem das
+                 variáveis :root definidas aqui.
+   ------------------------------------------------------------------------ */
+
+:root{
+  --white:#ffffff;
+  --paper:#f7f8f6;
+  --ink:#10201a;
+  --ink-soft:#4a564f;
+  --line:#dfe3df;
+
+  --blue:#1351d8;
+  --blue-deep:#0d3aa0;
+  --green:#0b8a3d;
+  --green-deep:#066b2e;
+  --yellow:#f5c400;
+  --yellow-deep:#c99e00;
+
+  --serif: "Source Serif 4", Georgia, serif;
+  --sans: "Inter", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", monospace;
+
+  --radius: 4px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--white);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:1120px;
+  margin:0 auto;
+  padding:0 28px;
+}
+
+a{color:var(--blue-deep); text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+:focus-visible{
+  outline:3px solid var(--blue);
+  outline-offset:2px;
+}

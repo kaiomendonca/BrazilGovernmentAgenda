@@ -1,0 +1,22 @@
+/* ==========================================================================
+   RESPONSIVE — ajustes de layout para telas menores e acessibilidade
+   ==========================================================================
+   Onde estava:  antigo styles.css (linhas 491–505).
+   Observação:   este arquivo deve ser carregado por último, para que os
+                 breakpoints sobrescrevam as regras dos arquivos anteriores.
+   ------------------------------------------------------------------------ */
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr; padding:40px 20px 48px;}
+  .hero__title{font-size:38px;}
+  .about{grid-template-columns:1fr; padding-top:40px;}
+  .authority-grid{grid-template-columns:1fr;}
+  .event-item{grid-template-columns:1fr; gap:6px;}
+  .event-item__role{justify-self:flex-start;}
+  .masthead__nav{gap:16px; font-size:13.5px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  .event-skeleton{animation:none;}
+}
